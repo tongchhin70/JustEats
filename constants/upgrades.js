@@ -43,6 +43,23 @@ export const upgrades = [
         increase: safeQuerySelector('.clicker-increase'),
         parseIncrease: parseFloat(safeQuerySelector('.clicker-increase')?.innerHTML || 0),
         level: safeQuerySelector('.clicker-level'),
+        powerUps: [
+            {
+                name: "2x clicker",
+                description: "Double your clicking power",
+                multiplier: 2,
+            },
+            {
+                name: "2x clicker",
+                description: "Double your clicking power",
+                multiplier: 2,
+            },
+            {
+                name: "2x clicker",
+                description: "Double your clicking power",
+                multiplier: 2,
+            },
+        ],
         gemMultiplier: 1.01,
         costMultiplier: 1.12,
     },
@@ -53,6 +70,24 @@ export const upgrades = [
         increase: safeQuerySelector('.pickaxe-increase'),
         parseIncrease: parseFloat(safeQuerySelector('.pickaxe-increase')?.innerHTML || 0),
         level: safeQuerySelector('.pickaxe-level'),
+        powerUps: [
+            {
+                name: "2x pickaxe",
+                description: "Double your clicking efficiency",
+                multiplier: 2,
+            },
+            {
+                name: "2x pickaxe",
+                description: "Double your clicking efficiency",
+                multiplier: 2,
+            },
+            {
+                name: "2x pickaxe",
+                description: "Double your clicking efficiency",
+                multiplier: 2,
+            },
+        ],
+        power: 0,
         gemMultiplier: 1.025,
         costMultiplier: 1.25,
     },
@@ -63,6 +98,7 @@ export const upgrades = [
         increase: safeQuerySelector('.miner-increase'),
         parseIncrease: parseFloat(safeQuerySelector('.miner-increase')?.innerHTML || 0),
         level: safeQuerySelector('.miner-level'),
+        power: 0,
         gemMultiplier: 1.015,
         costMultiplier: 1.5,
     },
@@ -73,7 +109,22 @@ export const upgrades = [
         increase: safeQuerySelector('.factory-increase'),
         parseIncrease: parseFloat(safeQuerySelector('.factory-increase')?.innerHTML || 0),
         level: safeQuerySelector('.factory-level'),
+        power: 0,
         gemMultiplier: 1.01,
-        costMultiplier: 2,
+        costMultiplier: 1.5,
     },
+    {
+        name: 'robot',
+        cost: safeQuerySelector('.robot-cost'),
+        parseCost: parseFloat(safeQuerySelector('.robot-cost')?.innerHTML || 0),
+        increase: safeQuerySelector('.robot-increase'),
+        parseIncrease: parseFloat(safeQuerySelector('.robot-increase')?.innerHTML || 0),
+        level: safeQuerySelector('.robot-level'),
+        power: 0,
+        gemMultiplier: 1.25,
+        costMultiplier: 2.5,
+    },
+
 ];
+
+export const powerUpIntervals = [10,20,30,50,75,100,200,300];

@@ -1,4 +1,4 @@
-import { upgrades } from "./constants/upgrades.js"
+import { powerUpIntervals, upgrades } from "./constants/upgrades.js"
 //import { defaultValues } from "./constants/defaultValues.js"
 
 let gem=document.querySelector('.gem-cost');
@@ -83,36 +83,70 @@ function buyUpgrade(upgradeName) {
         return;
     }
 
+
+    const upgradeDiv = document.getElementById(`${matchUpgrade.name}-upgrade`);
+    const nextLevelDiv = document.getElementById(`${matchUpgrade.name}-next-level`);
+    const nextLevelP = document.getElementById(`${matchUpgrade.name}-next-p`);
+
     if (parseGem >= matchUpgrade.parseCost) {
 
-        const UpgradeSound = new Audio('/assets/audio/upgrade.ogg');
-        UpgradeSound.volume = 0.1
-        UpgradeSound.play()
-        
-        // Deduct cost and update gems
-        parseGem -= matchUpgrade.parseCost;
-        gem.innerHTML = Math.round(parseGem);
+        const UpgradeSound = new Audio('/assets/audio/upgrade.mp3');
+        UpgradeSound.volume = 0.1;
+        UpgradeSound.play();
 
-        // Dynamically requery the level element
-        const levelElement = document.querySelector(`.${matchUpgrade.name}-level`);
-        const currentLevel = parseInt(levelElement.innerHTML, 10) || 0;
-        levelElement.innerHTML = currentLevel + 1;
+        gem.innerHTML =  Math.round(parseGem -= matchUpgrade.parseCost)
 
-        // Update cost and increase values
-        matchUpgrade.parseIncrease = parseFloat((matchUpgrade.parseIncrease * matchUpgrade.gemMultiplier).toFixed(2));
-        document.querySelector(`.${matchUpgrade.name}-increase`).innerHTML = matchUpgrade.parseIncrease;
+        let index = powerUpIntervals.indexOf(parseFloat(matchUpgrade.level.innerHTML));
 
-        matchUpgrade.parseCost *= matchUpgrade.costMultiplier;
-        document.querySelector(`.${matchUpgrade.name}-cost`).innerHTML = Math.round(matchUpgrade.parseCost);
+        if (index !== -1){
 
-        // Update gpc or gps
-        if (matchUpgrade.name === 'clicker') {
-            gpc += matchUpgrade.parseIncrease;
-        } else {
-            gps += matchUpgrade.parseIncrease;
+            upgradeDiv.style.cssText = `border-color: white;`;
+            nextLevelDiv.style.cssText = `background-color: rgb(78, 110, 110); font-weight: normal`;
+            matchUpgrade.cost.innerHTML = Math.round(matchUpgrade.parseCost *= matchUpgrade.costMultiplier)
+
+            if (matchUpgrade.name === 'clicker') {
+                gpc *= matchUpgrade.powerUps[index].multiplier;
+                nextLevelP.innerHTML = `+${matchUpgrade.parseIncrease} gems per click`;
+            } else {
+                
+                gps -= matchUpgrade.power;
+                matchUpgrade.power *= matchUpgrade.powerUps[index].multiplier;
+                gps += matchUpgrade.power;
+                nextLevelP.innerHTML = `+${matchUpgrade.parseIncrease} gems per second`;
+                
+            }
         }
-    } else {
-        console.warn('Not enough gems to buy this upgrade.');
+
+
+        matchUpgrade.level.innerHTML ++;
+
+        index = powerUpIntervals.indexOf(parseFloat(matchUpgrade.level.innerHTML))
+
+
+        if (index !== -1) {
+            upgradeDiv.style.cssText = `border: 5px orange solid;`;
+            nextLevelDiv.style.cssText = `background-color: darkorange; font-weight: bold`;
+            nextLevelP.innerText = matchUpgrade.powerUps[index].description
+
+            matchUpgrade.cost.innerHTML = Math.round(matchUpgrade.parseCost * 2.5 * 1.004 ** parseFloat(matchUpgrade.level.innerHTML))
+        } else {
+            matchUpgrade.cost.innerHTML = Math.round(matchUpgrade.parseCost *= matchUpgrade.costMultiplier);
+            matchUpgrade.parseIncrease = parseFloat((matchUpgrade.parseIncrease * matchUpgrade.gemMultiplier).toFixed(2))
+
+            if (matchUpgrade.name === 'clicker' ) {
+                nextLevelP.innerHTML = `+${matchUpgrade.parseIncrease} gems per click`;
+            }
+            else {
+                nextLevelP.innerHTML = `+${matchUpgrade.parseIncrease} gems per second`;
+            }
+        }
+
+        if (matchUpgrade.name === 'clicker' ) gpc += matchUpgrade.parseIncrease;
+        else {
+            gps -= matchUpgrade.power
+            matchUpgrade.power += matchUpgrade.parseIncrease
+            gps += matchUpgrade.power
+        }
     }
 }
 
@@ -122,6 +156,7 @@ const timeout = (div) => {
         div.remove();
     }, 800);
 }
+
 setInterval (() => {
     parseGem += gps/10;
     gem.innerHTML = Math.round(parseGem);

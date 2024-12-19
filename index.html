@@ -18,7 +18,7 @@
             </div>
 
             <script id="upgrade-template" type="text/template">
-                <div class="upgrade" data-name="{{name}}" onclick="buyUpgrade('{{name}}')">
+                <div class="upgrade" data-name="{{name}}" onclick="buyUpgrade('{{name}}')" id="{{name}}-upgrade">
                     <div class="left-section">
                         <img src="{{image}}" alt="" class="upgrade-img">
                     </div>
@@ -30,8 +30,10 @@
                         </div>
                     </div>
                     <div class="right-section">Level: <span class="{{name}}-level">0</span></div>
-                    <div class="next-level-info">
-                        <p>+<span class="{{name}}-increase">{{increase}}</span> coins <br/> per Second</p>
+                    <div class="next-level-info" id="{{name}}-next-level">
+                        <p id="{{name}}-next-p">+<span class="{{name}}-increase">{{increase}}
+                        </span> coins <br/> per Second
+                        </p>
                     </div>
                 </div>
             </script>

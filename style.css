@@ -99,10 +99,12 @@ body{
     position: absolute;
     right: -105px;
     background-color: rgb(78, 110, 110);
-    height: 80px;
+    height: 85px;
     width: 100px;
     text-align: center;
     display: none;
+    font-size: 15px;
+    border-radius: 2px;
 }
 
 .upgrade:hover .next-level-info {
